@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>التحليل التشريعي والتنظيمي · صالح الذيابي</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    background: #f8f9fa;
+    color: #1a1a1a;
+    direction: rtl;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* Header */
+  .header {
+    background: #0D2137;
+    color: white;
+    padding: 2.5rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+  }
+  .header-meta { font-size: 13px; color: #8BA4C0; margin-bottom: 8px; letter-spacing: 0.5px; }
+  .header-name { font-size: 28px; font-weight: 700; color: #ffffff; margin-bottom: 6px; }
+  .header-sub { font-size: 14px; color: #8BA4C0; }
+
+  /* Tab Nav */
+  .tab-nav {
+    display: flex; gap: 6px; margin-bottom: 1.5rem;
+    flex-wrap: wrap; background: white;
+    padding: 0.75rem; border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+  .tab-btn {
+    padding: 7px 18px; font-size: 13px; font-weight: 600;
+    border-radius: 20px; cursor: pointer;
+    border: 1.5px solid #e2e8f0;
+    background: transparent; color: #64748b;
+    transition: all 0.2s; font-family: inherit;
+  }
+  .tab-btn:hover { background: #f1f5f9; }
+  .tab-btn.active {
+    background: #0D2137; color: white; border-color: #0D2137;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Section */
+  .section { margin-bottom: 2rem; }
+  .section-title {
+    font-size: 16px; font-weight: 700; color: #0D2137;
+    border-right: 4px solid #1E88E5;
+    padding-right: 12px; margin-bottom: 1.2rem;
+  }
+
+  /* Metric cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .metric-card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 1rem; text-align: center;
+  }
+  .metric-label { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 700; color: #0D2137; }
+  .metric-note { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #e2e8f0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; background: white; }
+  th {
+    font-weight: 600; font-size: 12px; color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+    padding: 10px 12px; text-align: right;
+    background: #f8fafc;
+  }
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b; vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbff; }
+
+  /* Badge */
+  .badge {
+    display: inline-block; font-size: 11px; padding: 3px 9px;
+    border-radius: 20px; font-weight: 600;
+  }
+  .badge-blue { background: #dbeafe; color: #1e40af; }
+  .badge-green { background: #dcfce7; color: #166534; }
+  .badge-amber { background: #fef3c7; color: #92400e; }
+  .badge-red { background: #fee2e2; color: #991b1b; }
+  .badge-gray { background: #f1f5f9; color: #475569; }
+
+  /* Bar chart */
+  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .bar-label { font-size: 12px; color: #64748b; min-width: 55px; text-align: right; }
+  .bar-label-wide { min-width: 180px; }
+  .bar-track { flex: 1; height: 18px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; }
+  .bar-val { font-size: 12px; color: #1e293b; font-weight: 600; min-width: 40px; }
+
+  /* Insight boxes */
+  .insight {
+    border-radius: 8px; padding: 0.85rem 1rem;
+    margin-bottom: 0.75rem; font-size: 13px;
+    line-height: 1.7; border-right: 4px solid;
+  }
+  .insight.info { background: #eff6ff; border-color: #3b82f6; color: #1e3a5f; }
+  .insight.warn { background: #fffbeb; border-color: #f59e0b; color: #5a3e00; }
+  .insight.success { background: #f0fdf4; border-color: #22c55e; color: #14532d; }
+  .insight.neutral { background: #f8fafc; border-color: #94a3b8; color: #334155; }
+
+  /* Period compare */
+  .period-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .period-card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 1rem;
+  }
+  .period-card.highlight { border: 2px solid #1E88E5; }
+  .period-name { font-size: 11px; color: #64748b; margin-bottom: 6px; }
+  .period-num { font-size: 22px; font-weight: 700; color: #0D2137; }
+  .period-pct { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  /* Exec list */
+  .exec-list { list-style: none; }
+  .exec-list li {
+    display: flex; gap: 10px; padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px; color: #334155; line-height: 1.65;
+  }
+  .exec-list li:last-child { border-bottom: none; }
+  .exec-num { color: #94a3b8; font-size: 12px; min-width: 22px; padding-top: 2px; font-weight: 600; }
+
+  /* Content card */
+  .card {
+    background: white; border: 1px solid #e2e8f0;
+    border-radius: 10px; padding: 1.25rem; margin-bottom: 1.25rem;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center; font-size: 12px; color: #94a3b8;
+    padding: 1.5rem 0; border-top: 1px solid #e2e8f0;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 600px) {
+    .period-grid { grid-template-columns: 1fr; }
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .bar-label-wide { min-width: 120px; }
+  }
+  @media print {
+    body { background: white; }
+    .tab-nav { display: none; }
+    .tab-content { display: block !important; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="header-meta">تحليل الوثائق التشريعية والتنظيمية · المملكة العربية السعودية</div>
+    <div class="header-name">صالح الذيابي</div>
+    <div class="header-sub">1931–2023 · آخر تحديث للبيانات: مايو 2024 · إجمالي الوثائق: 6,350</div>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('exec',this)">الملخص التنفيذي</button>
+    <button class="tab-btn" onclick="showTab('temporal',this)">التحليل الزمني</button>
+    <button class="tab-btn" onclick="showTab('types',this)">أنواع الوثائق</button>
+    <button class="tab-btn" onclick="showTab('institutional',this)">التحليل المؤسسي</button>
+    <button class="tab-btn" onclick="showTab('sectoral',this)">التحليل القطاعي</button>
+  </div>
+
+  <!-- TAB: EXEC -->
+  <div id="tab-exec" class="tab-content active">
+    <div class="section">
+      <div class="section-title">المؤشرات الكمية الرئيسية</div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-label">إجمالي الوثائق</div><div class="metric-value">6,350</div><div class="metric-note">1931–2023</div></div>
+        <div class="metric-card"><div class="metric-label">الوثائق السارية</div><div class="metric-value">5,555</div><div class="metric-note">87.5% من الإجمالي</div></div>
+        <div class="metric-card"><div class="metric-label">الإصدارات الجديدة</div><div class="metric-value">78%</div><div class="metric-note">4,954 وثيقة</div></div>
+        <div class="metric-card"><div class="metric-label">التعديلات</div><div class="metric-value">22%</div><div class="metric-note">1,396 وثيقة</div></div>
+        <div class="metric-card"><div class="metric-label">ذروة الإصدار</div><div class="metric-value">2020</div><div class="metric-note">617 وثيقة في عام واحد</div></div>
+        <div class="metric-card"><div class="metric-label">نسبة 2016–2023</div><div class="metric-value">51%</div><div class="metric-note">من إجمالي الوثائق</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">أبرز النتائج</div>
+      <div class="card">
+        <ul class="exec-list">
+          <li><span class="exec-num">1</span><span>تضمّ قاعدة البيانات 6,350 وثيقة تشريعية وتنظيمية تمتد من 1931 إلى 2023، تتوزع بين أدوات الملك (1,777) ومجلس الوزراء (2,553) والسلطة التنفيذية (2,020).</span></li>
+          <li><span class="exec-num">2</span><span>أكثر من نصف الوثائق (51.3%) صدرت في الفترة 2016–2023، وهو ما يعكس تسارعاً تشريعياً واضحاً مقارنةً بالحقب السابقة.</span></li>
+          <li><span class="exec-num">3</span><span>بلغ النشاط ذروته عام 2020 بـ 617 وثيقة، ثم عام 2021 بـ 513، ويُرجَّح أن يكون لوباء كوفيد-19 أثر على هذا الارتفاع—غير أن البيانات وحدها لا تكفي للجزم بذلك.</span></li>
+          <li><span class="exec-num">4</span><span>قرارات مجلس الوزراء تمثل 40.2% من إجمالي الإصدارات، وهي الجهة الأكثر حضوراً في المنظومة التشريعية.</span></li>
+          <li><span class="exec-num">5</span><span>تُشكّل القرارات 62.5% من مجموع الوثائق، في حين تمثل الأنظمة 13.4% واللوائح 18.8%، مما يدل على غلبة الأدوات التنفيذية على الأدوات التشريعية الأصيلة.</span></li>
+          <li><span class="exec-num">6</span><span>نسبة التعديل على الأنظمة مرتفعة بشكل لافت (58.7%)—أي أن تعديلات الأنظمة تتجاوز الأنظمة الجديدة—مما يشير إلى نضج نسبي لهذا المستوى التشريعي أو إلى إرث تشريعي يُحدَّث تدريجياً.</span></li>
+          <li><span class="exec-num">7</span><span>وثائق إنشاء أو ترتيب المرافق العامة تمثل القطاع الأعلى تمثيلاً (24.8%)، يليه النشاط التجاري والاستثمار (11.6%)، ثم الموارد البشرية (7%).</span></li>
+          <li><span class="exec-num">8</span><span>شهدت الفترة 2016–2023 ارتفاعاً في وثائق إنشاء الجهات والمؤسسات، مع ذروات في 2020 (33) و2018 (31) و2017 (29).</span></li>
+          <li><span class="exec-num">9</span><span>قرارات السلطة التنفيذية تمثّل اللوائح التنفيذية بنسبة شبه حصرية (1,008 من أصل 1,195 لائحة)، مما يدل على تركّز صلاحية اللائحة في السلطة التنفيذية الدنيا.</span></li>
+          <li><span class="exec-num">10</span><span>الوثائق غير السارية تبلغ 795 وثيقة (12.5%)، وأعلى نسبة إلغاء في وثائق المرافق العامة والنشاط التجاري، مما يدل على بيئة تنظيمية تشهد إحلالاً وتجديداً مستمرَّين.</span></li>
+          <li><span class="exec-num">11</span><span>قطاع الزكاة والضريبة يُسجّل أعلى نمو نسبي بعد 2016 (+475%)، من 16 إلى 92 وثيقة، بما يتسق مع إصلاحات المالية العامة.</span></li>
+          <li><span class="exec-num">12</span><span>تشير البيانات إلى أن فترة ما بعد 2016 تجمع بين بناء مؤسسي جديد وتحديث إطار تنظيمي قائم، وليس أحدهما منفرداً.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: TEMPORAL -->
+  <div id="tab-temporal" class="tab-content">
+    <div class="section">
+      <div class="section-title">توزيع الوثائق عبر الحقب الزمنية</div>
+      <div class="period-grid">
+        <div class="period-card"><div class="period-name">1931–1992 (62 سنة)</div><div class="period-num">627</div><div class="period-pct">9.9% — معدل 10/سنة</div></div>
+        <div class="period-card"><div class="period-name">1993–2015 (23 سنة)</div><div class="period-num">2,466</div><div class="period-pct">38.8% — معدل 107/سنة</div></div>
+        <div class="period-card highlight"><div class="period-name">2016–2023 (8 سنوات)</div><div class="period-num">3,257</div><div class="period-pct">51.3% — معدل 407/سنة</div></div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="insight info">ملاحظة رقمية: معدل الإصدار بعد 2016 يبلغ 407 وثيقة/سنة، أي ما يعادل 4 أضعاف معدل الفترة 1993–2015 (107/سنة) وأكثر من 40 ضعف معدل الفترة 1931–1992 (10/سنة).</div>
+        <div class="insight warn">فرضية تفسيرية: قد يعكس الارتفاع تحولات مؤسسية حقيقية، وقد يعكس جزئياً اتساع نطاق جمع البيانات في السنوات الأحدث. لا يمكن الفصل بين الأمرين دون بيانات عن منهجية التجميع.</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">أعلى 10 سنوات إصداراً</div>
+      <div class="card">
+        <div class="bar-row"><span class="bar-label">2020</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#1E88E5;"></div></div><span class="bar-val">617</span></div>
+        <div class="bar-row"><span class="bar-label">2021</span><div class="bar-track"><div class="bar-fill" style="width:83%;background:#1E88E5;"></div></div><span class="bar-val">513</span></div>
+        <div class="bar-row"><span class="bar-label">2019</span><div class="bar-track"><div class="bar-fill" style="width:82.8%;background:#1E88E5;"></div></div><span class="bar-val">511</span></div>
+        <div class="bar-row"><span class="bar-label">2018</span><div class="bar-track"><div class="bar-fill" style="width:66.8%;background:#42A5F5;"></div></div><span class="bar-val">412</span></div>
+        <div class="bar-row"><span class="bar-label">2017</span><div class="bar-track"><div class="bar-fill" style="width:58.2%;background:#42A5F5;"></div></div><span class="bar-val">359</span></div>
+        <div class="bar-row"><span class="bar-label">2022</span><div class="bar-track"><div class="bar-fill" style="width:50.7%;background:#90CAF9;"></div></div><span class="bar-val">313</span></div>
+        <div class="bar-row"><span class="bar-label">2016</span><div class="bar-track"><div class="bar-fill" style="width:47.2%;background:#90CAF9;"></div></div><span class="bar-val">291</span></div>
+        <div class="bar-row"><span class="bar-label">2015</span><div class="bar-track"><div class="bar-fill" style="width:43.9%;background:#BBDEFB;"></div></div><span class="bar-val">271</span></div>
+        <div class="bar-row"><span class="bar-label">2014</span><div class="bar-track"><div class="bar-fill" style="width:41.3%;background:#BBDEFB;"></div></div><span class="bar-val">255</span></div>
+        <div class="bar-row"><span class="bar-label">2023</span><div class="bar-track"><div class="bar-fill" style="width:39.1%;background:#BBDEFB;"></div></div><span class="bar-val">241</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">اتجاه الجديد مقابل التعديل عبر الحقب</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>الحقبة</th><th>الإجمالي</th><th>جديد</th><th>تعديل</th><th>نسبة التعديل</th></tr></thead>
+          <tbody>
+            <tr><td>1931–1992</td><td>627</td><td>492 (78.5%)</td><td>135 (21.5%)</td><td><span class="badge badge-green">منخفضة</span></td></tr>
+            <tr><td>1993–2015</td><td>2,466</td><td>2,057 (83.4%)</td><td>409 (16.6%)</td><td><span class="badge badge-green">الأدنى تاريخياً</span></td></tr>
+            <tr><td>2016–2023</td><td>3,257</td><td>2,405 (73.8%)</td><td>852 (26.2%)</td><td><span class="badge badge-amber">أعلى النسب</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="insight success">ارتفاع نسبة التعديلات في 2016–2023 (26.2%) مقارنةً بالفترة السابقة (16.6%) قد يدل على نضج تشريعي—تحديث منظومة قائمة لا اضطراباً. استنتاج قاطع يستلزم معرفة طبيعة التعديلات.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: TYPES -->
+  <div id="tab-types" class="tab-content">
+    <div class="section">
+      <div class="section-title">توزيع الوثائق حسب النوع</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>نوع الوثيقة</th><th>العدد</th><th>النسبة</th><th>ملاحظة</th></tr></thead>
+          <tbody>
+            <tr><td>قرارات</td><td>3,966</td><td>62.5%</td><td><span class="badge badge-amber">الأكثر تكراراً</span></td></tr>
+            <tr><td>لوائح</td><td>1,195</td><td>18.8%</td><td><span class="badge badge-blue">تشريع فرعي</span></td></tr>
+            <tr><td>أنظمة</td><td>849</td><td>13.4%</td><td><span class="badge badge-blue">تشريع عادي</span></td></tr>
+            <tr><td>تنظيم</td><td>337</td><td>5.3%</td><td><span class="badge badge-gray">أداة وسيطة</span></td></tr>
+            <tr><td>النظام الأساسي</td><td>3</td><td>0.05%</td><td><span class="badge badge-gray">تشريع أساسي</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="insight info">غلبة القرارات (62.5%) على الأنظمة (13.4%) تعكس طابعاً تنفيذياً وإدارياً للمنظومة. الأنظمة هي التشريعات الأصيلة، بينما القرارات أدوات تنفيذ أو ترتيب.</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">توزيع أداة الإصدار</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>أداة الإصدار</th><th>العدد</th><th>النسبة</th></tr></thead>
+          <tbody>
+            <tr><td>قرار مجلس الوزراء</td><td>2,553</td><td>40.2%</td></tr>
+            <tr><td>قرارات السلطة التنفيذية</td><td>2,020</td><td>31.8%</td></tr>
+            <tr><td>مرسوم ملكي</td><td>894</td><td>14.1%</td></tr>
+            <tr><td>أمر سامي</td><td>479</td><td>7.5%</td></tr>
+            <tr><td>أمر ملكي</td><td>373</td><td>5.9%</td></tr>
+            <tr><td>توجيه سامي</td><td>31</td><td>0.5%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">نسبة التعديل حسب نوع الوثيقة</div>
+      <div class="insight warn">الأنظمة: نسبة التعديل 58.7% (498 تعديل مقابل 351 جديد) — تعديلات الأنظمة تتجاوز إصداراتها الجديدة. مؤشر على حجم الإرث التشريعي القائم.</div>
+      <div class="insight success">اللوائح: نسبة التعديل 31.4% (375 تعديل مقابل 820 جديد) — غلبة للإصدار الجديد، تدل على توسّع تنظيمي مستمر.</div>
+      <div class="insight neutral">القرارات: نسبة التعديل منخفضة نسبياً، إذ معظمها إصدارات جديدة — يتوافق مع طبيعتها التنفيذية والمرحلية.</div>
+    </div>
+    <div class="section">
+      <div class="section-title">العلاقة بين أداة الإصدار ونوع الوثيقة</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>أداة الإصدار</th><th>أنظمة</th><th>لوائح</th><th>قرارات</th><th>تنظيم</th></tr></thead>
+          <tbody>
+            <tr><td>مرسوم ملكي</td><td>713 ✓</td><td>1</td><td>178</td><td>2</td></tr>
+            <tr><td>قرار مجلس الوزراء</td><td>113</td><td>153</td><td>1,968</td><td>319 ✓</td></tr>
+            <tr><td>قرارات السلطة التنفيذية</td><td>2</td><td>1,008 ✓</td><td>1,010</td><td>0</td></tr>
+            <tr><td>أمر سامي</td><td>2</td><td>25</td><td>452 ✓</td><td>0</td></tr>
+            <tr><td>أمر ملكي</td><td>19</td><td>8</td><td>327</td><td>16</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="insight info">نمط واضح: المرسوم الملكي هو الأداة شبه الحصرية للأنظمة (713 من 849، أي 84%). السلطة التنفيذية تنفرد بإصدار اللوائح (1,008 من 1,195). قرار مجلس الوزراء يُهيمن على التنظيمات.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: INSTITUTIONAL -->
+  <div id="tab-institutional" class="tab-content">
+    <div class="section">
+      <div class="section-title">مؤشر إنشاء الجهات وإعادة الهيكلة</div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-label">وثائق إنشاء/هيكلة</div><div class="metric-value">343</div><div class="metric-note">5.4% من الإجمالي</div></div>
+        <div class="metric-card"><div class="metric-label">ذروة إنشاء الجهات</div><div class="metric-value">2020</div><div class="metric-note">33 وثيقة في عام واحد</div></div>
+        <div class="metric-card"><div class="metric-label">تشكيل لجان ومجالس</div><div class="metric-value">339</div><div class="metric-note">في القرارات التنظيمية</div></div>
+        <div class="metric-card"><div class="metric-label">تأسيس الشركات</div><div class="metric-value">51</div><div class="metric-note">في قرارات تنظيمية</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">أعلى سنوات إنشاء الجهات والمؤسسات</div>
+      <div class="card">
+        <div class="bar-row"><span class="bar-label">2020</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#1E88E5;"></div></div><span class="bar-val">33</span></div>
+        <div class="bar-row"><span class="bar-label">2018</span><div class="bar-track"><div class="bar-fill" style="width:93.9%;background:#1E88E5;"></div></div><span class="bar-val">31</span></div>
+        <div class="bar-row"><span class="bar-label">2017</span><div class="bar-track"><div class="bar-fill" style="width:87.9%;background:#42A5F5;"></div></div><span class="bar-val">29</span></div>
+        <div class="bar-row"><span class="bar-label">2015</span><div class="bar-track"><div class="bar-fill" style="width:81.8%;background:#42A5F5;"></div></div><span class="bar-val">27</span></div>
+        <div class="bar-row"><span class="bar-label">2016</span><div class="bar-track"><div class="bar-fill" style="width:72.7%;background:#90CAF9;"></div></div><span class="bar-val">24</span></div>
+        <div class="bar-row"><span class="bar-label">2019</span><div class="bar-track"><div class="bar-fill" style="width:66.7%;background:#90CAF9;"></div></div><span class="bar-val">22</span></div>
+        <div class="bar-row"><span class="bar-label">2014</span><div class="bar-track"><div class="bar-fill" style="width:63.6%;background:#BBDEFB;"></div></div><span class="bar-val">21</span></div>
+        <div class="bar-row"><span class="bar-label">2021</span><div class="bar-track"><div class="bar-fill" style="width:60.6%;background:#BBDEFB;"></div></div><span class="bar-val">20</span></div>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="insight info">7 من أعلى 8 سنوات في إنشاء الجهات تقع بعد 2014. مؤشر ارتباط بين النشاط المؤسسي الكثيف وفترة ما بعد 2015 — لكن الارتباط لا يعني السببية دون قراءة محتوى الوثائق.</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">التصنيفات التنظيمية الفرعية</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>التصنيف</th><th>العدد</th></tr></thead>
+          <tbody>
+            <tr><td>تشكيل اللجان والمجالس</td><td>339</td></tr>
+            <tr><td>قواعد</td><td>224</td></tr>
+            <tr><td>ضوابط</td><td>159</td></tr>
+            <tr><td>تعليمات</td><td>140</td></tr>
+            <tr><td>الترتيبات التنظيمية</td><td>98</td></tr>
+            <tr><td>تأسيس الشركات</td><td>51</td></tr>
+            <tr><td>استراتيجيات</td><td>39</td></tr>
+            <tr><td>سياسات</td><td>22</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: SECTORAL -->
+  <div id="tab-sectoral" class="tab-content">
+    <div class="section">
+      <div class="section-title">أعلى القطاعات تمثيلاً</div>
+      <div class="card">
+        <div class="bar-row"><span class="bar-label bar-label-wide">إنشاء المرافق العامة</span><div class="bar-track"><div class="bar-fill" style="width:100%;background:#1E88E5;"></div></div><span class="bar-val">1,575</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">النشاط التجاري والاستثمار</span><div class="bar-track"><div class="bar-fill" style="width:46.8%;background:#42A5F5;"></div></div><span class="bar-val">737</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">الموارد البشرية</span><div class="bar-track"><div class="bar-fill" style="width:28.2%;background:#64B5F6;"></div></div><span class="bar-val">444</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">القضاء والشؤون العدلية</span><div class="bar-track"><div class="bar-fill" style="width:15.7%;background:#90CAF9;"></div></div><span class="bar-val">247</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">الشؤون العسكرية</span><div class="bar-track"><div class="bar-fill" style="width:12.8%;background:#90CAF9;"></div></div><span class="bar-val">202</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">التقاعد والتأمينات</span><div class="bar-track"><div class="bar-fill" style="width:8.6%;background:#BBDEFB;"></div></div><span class="bar-val">136</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">البيئة والزراعة</span><div class="bar-track"><div class="bar-fill" style="width:8.4%;background:#BBDEFB;"></div></div><span class="bar-val">133</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">التعليم والابتعاث</span><div class="bar-track"><div class="bar-fill" style="width:8.3%;background:#BBDEFB;"></div></div><span class="bar-val">131</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">العمل والتوطين</span><div class="bar-track"><div class="bar-fill" style="width:7.9%;background:#BBDEFB;"></div></div><span class="bar-val">124</span></div>
+        <div class="bar-row"><span class="bar-label bar-label-wide">المنافسات والمشتريات</span><div class="bar-track"><div class="bar-fill" style="width:7.7%;background:#BBDEFB;"></div></div><span class="bar-val">121</span></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">القطاعات التي شهدت نمواً بعد 2016</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>القطاع</th><th>قبل 2016</th><th>بعد 2016</th><th>التغيّر النسبي</th></tr></thead>
+          <tbody>
+            <tr><td>الزكاة والضريبة</td><td>16</td><td>92</td><td><span class="badge badge-red">+475%</span></td></tr>
+            <tr><td>المرافق العامة</td><td>553</td><td>1,022</td><td><span class="badge badge-amber">+85%</span></td></tr>
+            <tr><td>القضاء والعدلية</td><td>99</td><td>148</td><td><span class="badge badge-amber">+49%</span></td></tr>
+            <tr><td>النشاط التجاري</td><td>300</td><td>437</td><td><span class="badge badge-amber">+46%</span></td></tr>
+            <tr><td>البيئة والزراعة</td><td>67</td><td>66</td><td><span class="badge badge-gray">مستقر</span></td></tr>
+            <tr><td>الموارد البشرية</td><td>306</td><td>138</td><td><span class="badge badge-green">-55%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:0.75rem;">
+        <div class="insight info">النمو الكبير في وثائق الزكاة والضريبة بعد 2016 (من 16 إلى 92 وثيقة) يتسق مع إصلاحات المالية العامة. تراجع الموارد البشرية نسبياً قد يعني انتقال المرجعية إلى جهات أخرى.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">صالح الذيابي · التحليل التشريعي والتنظيمي · المملكة العربية السعودية 1931–2023</div>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
